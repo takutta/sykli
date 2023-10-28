@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{asetukset["pk_nimi"]}} | vk {{asetukset["viikon_paivat"][0].strftime("%V")}} | Merikarhu </title>
+    <link rel="icon" type="image/x-icon" href="../merikarhu.ico">
+    <link rel="stylesheet" href="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/css/minty.min.css">
+    <link rel="stylesheet" href="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/css/style.css">
+    <script src="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/js/loader.js"></script>
+    <script src="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/js/jquery-3.6.0.min.js"></script>
+    <script src="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/js/bootstrap.bundle.min.js"></script>
+    <script src="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/js/mini.js"></script>
+    <script src="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/js/plotly.js"></script>
+    <script src="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/js/resize.js"></script>
+    <script src="Aputiedostot/vk_{{asetukset['viikon_paivat'][0].strftime('%V')}}/js/scrollspy.js"></script>
+
+</head>
+
+<body>
+    <div id="loader" class="center"></div>
+    <div id="kaikki" class="hidden">
+        <div class="sticky-md-top">
+            <nav id="navbar-spy" class="navbar navbar-dark navbar-expand-xl pt-0 bg-dark bg-body-tertiary">
+                <div class="container-fluid d-flex">
+                    <h1 class="navbar-brand retroshadow mt-2 ps-3 fs-3 py-0 my-0 text-white fw-bold" href="#">Merikarhu
+                    </h1>
+                    <div class="me-2">
+                        <input type="checkbox" class="btn-check" id="toggleLapset" autocomplete="off">
+                        <label class="btn mt-2 btn-outline-info" for="toggleLapset">Mini</label>
+                    </div>
+                    <div class="flex-grow-1 d-xl-none"></div>
+                    <button id="collapseButton" class="navbar-toggler ms-auto mt-2" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <ul id="navbarToggler" class="collapse navbar-collapse nav nav-pills">
+                        {% for ryhmä in data[0] %}
+                        {% set tab_id = ryhmä['nimi'].replace(' ', '_').replace('ä', 'a').replace('ö', 'o') %}
+                        <li class="nav-item">
+                            <a id="{{ tab_id }}-link" class="nav-link mt-2 me-2" href="#{{ tab_id }}-0">{{ ryhmä["nimi"]
+                                }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="flex-grow-1 d-none d-xl-block"></div>
+                </div>
+            </nav>
+        </div>
+        <div class="container-fluid pt-2">
+            <nav id="main_tab">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    {% for paiva in range(asetukset["viikon_paivat"]|length) %}
+                    {% set active_tab = "active" if paiva == 0 else "" %}
+                    {% set tab_selected = "true" if paiva == 0 else "" %}
+                    <button class="nav-link {{ active_tab }}" id="paiva{{ paiva }}-tab" data-bs-toggle="tab"
+                        data-bs-target="#paiva-{{ paiva }}" type="button" role="tab" aria-controls="paiva-{{ paiva }}"
+                        aria-selected="{{tab_selected}}">{{ asetukset["viikon_paivat"][paiva].strftime("%a %#d.%#m")
+                        }}</button>
+                    {% endfor %}
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                {% for paiva in range(asetukset["viikon_paivat"]|length) %}
+                {% set active_tab = "show active" if paiva == 0 else "" %}
+                <div class="tab-pane fade {{active_tab }}" id="paiva-{{ paiva }}" role="tabpanel"
+                    aria-labelledby="paiva-{{ paiva }}" tabindex="0">
+                    {% for ryhmä in data[paiva] %}
+                    <div id="{{ ryhmä['nimi'].replace(' ', '_').replace('ä', 'a' ).replace('ö', 'o' )}}-{{paiva}}"
+                        data-bs-target="#navbar-spy" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true"
+                        class="bg-body-tertiary px-3 rounded-2 clearfix minitoggle" tabindex="0">
+                        <section class="toggle-section pe-4">
+                            <h2>{{ ryhmä["nimi"] }}</h2>
+                            <div class="row">
+                                <table class="table table-striped table-bordered">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            {% for otsikko in ryhmä["lapset"][0] %}
+                                            <th scope="col"
+                                                class="{% if otsikko == 'tt / tarve' or otsikko=='lapset' %}minwidth145{% endif %}">
+                                                {{otsikko}}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in ryhmä["lapset"][1:] %}
+                                        <tr>
+                                            {% for item in row %}
+                                            <td>{{ item }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div> <!-- row -->
+
+                            {% set i = loop.index %}
+
+                            <div id="{{ paiva }}{{ i - 1 }}_kuvaajaYla" class="kuvaaja_yla">
+                                {{ ryhmä["kuvaaja"] }}
+                            </div>
+
+                        </section>
+
+                    </div> <!-- scrollspy -->
+                    {% endfor %} <!-- ryhma -->
+
+                    <div id="alakuvaajat">
+                        {% for kuv_index in range(data[paiva]|length) %}
+                        <div id="{{ paiva }}{{ kuv_index }}_kuvaajaAla" class="kuvaaja_ala">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div> <!-- tab pane-->
+
+
+                {% endfor %} <!-- paiva -->
+
+            </div> <!-- tab content -->
+        </div> <!-- container -->
+    </div> <!-- kaikki -->
+</body>
+
+</html>

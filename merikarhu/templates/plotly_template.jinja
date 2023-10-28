@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <title>Monta viivaa</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <h1>Monta viivaa</h1>
+    <div id="diagrammi"></div>
+    <script>
+        // Jinja-muuttujien arvot saadaan Pythonista ja välitetään JavaScriptiin
+        var traces = {{ traces | tojson }};
+        var layout = {
+            title: 'Monta viivaa',
+            xaxis: { title: 'X-akseli' },
+            yaxis: { title: 'Y-akseli' }
+        };
+
+        // Näytä diagrammi HTML-elementissä
+        Plotly.newPlot('diagrammi', traces, layout);
+    </script>
+</body>
+
+</html>

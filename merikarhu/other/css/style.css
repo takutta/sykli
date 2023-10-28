@@ -1,0 +1,83 @@
+#main_tab .nav-tabs {
+    --bs-nav-tabs-border-width: 2px;
+    --bs-nav-tabs-border-radius: 0.8rem;
+    --bs-nav-tabs-link-active-border-color: #a8d8f0 #a8d8f0 #fff;
+    --bs-nav-tabs-border-color: #a8d8f0;
+    --bs-nav-tabs-link-hover-border-color: #ebebff #ebebff #a8d8f0;
+    font-weight:500;
+    
+  }
+
+ #kaikki .table-dark {
+    --bs-table-bg: #525252;
+    --bs-table-border-color: #838383;
+  }
+
+#alakuvaajat {
+    clear:both
+}
+
+.text-bg-yellow, .text-yellow {background-color: #ebbc00}
+.text-bg-blue, .text-blue {background-color: #0091ff}
+.text-bg-teal, .text-teal {background-color: #3db9cf}
+.text-bg-black, .text-black {background-color: #8a918e}
+.text-bg-green, .text-green {background-color: #30a46c}
+.text-bg-brown, .text-brown {background-color: #ad7f58}
+.text-bg-purple, .text-purple {background-color: #8e4ec6}
+.text-bg-red, .text-red {background-color: #e54d2e}
+.text-bg-pink, .text-pink {background-color: #f65cb6}
+.text-bg-orange, .text-orange {background-color: #fa934e}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid #666;
+}
+
+.nav-pills .nav-link {
+
+    border: 1px solid rgba(0,0,0,0);
+}
+.minwidth145 {
+    min-width: 145px
+}
+
+.retroshadow {
+
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4), 0px 0px 0px rgba(255, 255, 255, 1), 0px 0px 4px rgba(0, 0, 0, 1);
+}
+
+.ryhma {
+    float: left;
+    min-width: 400px;
+    margin-right: 10px
+}
+
+#loader {
+    border: 12px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 12px solid #444444;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.center {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.hidden {opacity: 0;
+    transition: opacity 0.5s;}
+.show {opacity:1;
+    transition: opacity 0.5s;}
